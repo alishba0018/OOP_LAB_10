@@ -1,0 +1,24 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream articleFile("article.txt");
+    if (!articleFile) {
+        cerr << "Error opening article.txt!" << endl;
+        return 1;
+    }
+    articleFile.seekg(0, ios::end);
+    streampos fileSize = articleFile.tellg();
+    streampos halfPoint = fileSize / 2;
+    articleFile.seekg(halfPoint, ios::beg);
+    string line;
+    int lineCount = 0;
+    while (lineCount < 10 && getline(articleFile, line)) {
+        cout << line << endl;
+        lineCount++;
+    }
+    articleFile.close(); 
+    return 0;
+}
