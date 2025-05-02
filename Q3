@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ofstream signupFile("signup.txt", ios::app); // Open in append mode
+    if (!signupFile) {
+        cerr << "Error opening signup.txt!" << endl;
+        return 1;
+    }
+    cout << "Workshop Registration\n";
+    cout << "Enter 'exit' as name to stop.\n";
+    string name, email;
+    while (true) {
+        cout << "Enter Name: ";
+        getline(cin, name);
+        if (name == "exit") break;  // Stop when user types 'exit'
+        cout << "Enter Email: ";
+        getline(cin, email);
+        signupFile << "Name: " << name << ", Email: " << email << endl;
+    }
+    signupFile.close();
+    cout << "Registration data has been saved to signup.txt" << endl;
+    return 0;
+}
