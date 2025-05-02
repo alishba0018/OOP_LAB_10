@@ -1,0 +1,30 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream file("file.txt", ios::in | ios::binary);
+    if (!file) {
+        cerr << "Error opening the file!" << endl;
+        return 1;
+    }
+    long offset;  
+    cout << "Enter a byte offset: ";
+    cin >> offset;
+    streampos currentPosition = file.tellg();
+    cout << "Current pointer position: " << currentPosition << " bytes" << endl;
+    file.seekg(offset);
+    if (!file) {
+        cerr << "Failed to move to the specified offset!" << endl;
+        return 1;
+    }
+    currentPosition = file.tellg();
+    cout << "Pointer after seeking to offset " << offset << ": " << currentPosition << " bytes" << endl;
+    char buffer[101];  
+    file.read(buffer, 100);
+    buffer[file.gcount()] = '\0';  
+    cout << "Next 100 characters from the file:\n" << buffer << endl;
+    file.close();
+    return 0;
+}
