@@ -1,0 +1,26 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ofstream backupLog("backup_log.txt", ios::app);
+    if (!backupLog) {
+        cerr << "Error opening backup_log.txt!" << endl;
+        return 1;
+    }
+    string logMessage;
+    while (true) {
+        cout << "Enter log message (or type 'exit' to stop): ";
+        getline(cin, logMessage);
+        if (logMessage == "exit") {
+            break;
+        }
+        backupLog << logMessage << endl;
+        backupLog.flush(); 
+        streampos currentSize = backupLog.tellp();  
+        cout << "Current file size: " << currentSize << " bytes" << endl;
+    }
+    backupLog.close();
+    return 0;
+}
