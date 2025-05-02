@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+struct Student {
+    char name[50];
+    int id;
+    float gpa;
+};
+
+int main() {
+    ofstream outFile("students.dat", ios::binary);  
+    if (!outFile) {
+        cerr << "Error opening file for writing!" << endl;
+        return 1;
+    }
+    int numStudents;
+    cout << "Enter number of students: ";
+    cin >> numStudents;
+    cin.ignore();
+    Student student;
+    for (int i = 0; i < numStudents; i++) {
+        cout << "\nEnter details for student " << i + 1 << ":\n";
+        cout << "Name: ";
+        cin.getline(student.name, 50);  
+        cout << "ID: ";
+        cin >> student.id;  
+        cout << "GPA: ";
+        cin >> student.gpa; 
+        outFile.write(reinterpret_cast<char*>(&student), sizeof(student));
+        cin.ignore();
+    }
+    outFile.close();  
+    ifstream inFile("students.dat", ios::binary);  
+    if (!inFile) {
+        cerr << "Error opening file for reading!" << endl;
+        return 1;
+    }
+    cout << "\nStudent Data from the file:\n";
+    while (inFile.read(reinterpret_cast<char*>(&student), sizeof(student))) {
+        cout << "\nName: " << student.name << endl;
+        cout << "ID: " << student.id << endl;
+        cout << "GPA: " << student.gpa << endl;
+    }
+    inFile.close();  
+    return 0;
+}
