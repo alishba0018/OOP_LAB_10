@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    fstream draftFile("draft.txt", ios::in | ios::out);
+    if (!draftFile) {
+        cerr << "Error opening draft.txt!" << endl;
+        return 1;
+    }
+    string word;
+    streampos position;
+    bool typoFound = false;
+    while (draftFile >> word) {
+        position = draftFile.tellg();  
+        if (word == "teh" && !typoFound) {
+            draftFile.seekp(position - streampos(word.length()), ios::beg);
+            draftFile << "the";
+            typoFound = true;
+            break;  
+        }
+    }
+    draftFile.close();  
+    if (typoFound) {
+        cout << "First instance of 'teh' was corrected to 'the'." << endl;
+    } else {
+        cout << "'teh' not found in the document." << endl;
+    }
+    return 0;
+}
