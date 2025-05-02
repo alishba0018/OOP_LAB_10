@@ -1,0 +1,57 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+bool isPunctuation(char c) {
+    // Check if the character is a punctuation mark manually
+    return (c == '.' || c == ',' || c == '!' || c == '?' || c == ';' || c == ':' || 
+            c == '-' || c == '_' || c == '"' || c == '\'' || c == '(' || c == ')');
+}
+bool isSpace(char c) {
+    // Check if the character is a space manually
+    return (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+}
+int main() {
+    ifstream articleFile("article.txt");
+    if (!articleFile) {
+        cerr << "Error opening article.txt!" << endl;
+        return 1;
+    }
+    int totalCharacters = 0;
+    int totalWords = 0;
+    int totalLines = 0;
+    int punctuationCount = 0;
+    string line;
+    while (getline(articleFile, line)) {
+        totalLines++;  
+        bool inWord = false;  
+        for (char c : line) {
+            totalCharacters++; 
+            if (isPunctuation(c)) {
+                punctuationCount++;  
+            }
+            if (isSpace(c)) {
+                inWord = false;
+            } else if (!inWord) {
+                inWord = true;
+                totalWords++;  
+            }
+        }
+    }
+    articleFile.close();
+    ofstream reportFile("report.txt");
+    if (!reportFile) {
+        cerr << "Error opening report.txt!" << endl;
+        return 1;
+    }
+    reportFile << "Content Analysis Report\n";
+    reportFile << "----------------------------\n";
+    reportFile << "Total Characters: " << totalCharacters << endl;
+    reportFile << "Total Words: " << totalWords << endl;
+    reportFile << "Total Lines: " << totalLines << endl;
+    reportFile << "Punctuation Marks: " << punctuationCount << endl;
+    reportFile.close();
+    cout << "Analysis complete. Results saved to report.txt." << endl;
+    return 0;
+}
