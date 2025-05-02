@@ -1,0 +1,22 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ofstream diaryFile("diary.txt", ios::app); 
+    if (!diaryFile) {
+        cerr << "Error opening diary.txt!" << endl;
+        return 1;
+    }
+    cout << "Start writing your diary. Type 'exit' on a new line to stop:\n";
+    string line;
+    while (true) {
+        getline(cin, line);
+        if (line == "exit") break;
+        diaryFile << line << endl;
+    }
+    diaryFile.close();
+    cout << "Your diary entry has been saved to diary.txt" << endl;
+    return 0;
+}
