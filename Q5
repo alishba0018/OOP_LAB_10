@@ -1,0 +1,28 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream storyFile("story.txt");
+
+    if (!storyFile) {
+        cerr << "Error opening story.txt!" << endl;
+        return 1;
+    }
+    string line;
+    while (getline(storyFile, line)) {
+        string word;
+        size_t pos = 0;
+        while ((pos = line.find(' ')) != string::npos) {
+            word = line.substr(0, pos); 
+            cout << word << endl;       
+            line.erase(0, pos + 1);     
+        }
+        if (!line.empty()) {
+            cout << line << endl;
+        }
+    }
+    storyFile.close();
+    return 0;
+}
