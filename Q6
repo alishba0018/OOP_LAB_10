@@ -1,0 +1,21 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main() {
+    ifstream secretFile("secret.txt");
+    if (!secretFile) {
+        cerr << "Error opening secret.txt!" << endl;
+        return 1;
+    }
+    char ch;
+    int uppercaseCount = 0;
+    while (secretFile.get(ch)) {
+        if (ch >= 'A' && ch <= 'Z') {
+            uppercaseCount++;
+        }
+    }
+    secretFile.close();
+    cout << "Number of uppercase letters (signals): " << uppercaseCount << endl;
+    return 0;
+}
